@@ -5,7 +5,7 @@ namespace Blueberry.Desktop.ConsolePlayground
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Console.WriteLine("Hello World!");
 
@@ -58,8 +58,6 @@ namespace Blueberry.Desktop.ConsolePlayground
                     Console.WriteLine(device);
                 }
             }
-
-            Console.ReadKey();
         }
     }
 }

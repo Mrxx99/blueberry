@@ -180,6 +180,7 @@ namespace Blueberry.Desktop.WindowsApp.Bluetooth
             // Is new discovery?
             var newDiscovery = false;
             var existingName = default(string);
+            var nameChanged = false;
 
             lock (mThreadLock)
             {
@@ -190,20 +191,22 @@ namespace Blueberry.Desktop.WindowsApp.Bluetooth
                 if (!newDiscovery)
                     // Store the old name
                     existingName = mDiscoverdDevices[device.DeviceId].Name;
-            }
-                
 
-            // Name changed?
-            var nameChanged =
-                // If it already exists
-                !newDiscovery &&
-                // And its not a blank name
-                !string.IsNullOrEmpty(device.Name) &&
-                // And the name is different
-                existingName != device.Name;
 
-            lock (mThreadLock)
-            {
+                // Name changed?
+                nameChanged =
+                    // If it already exists
+                    !newDiscovery &&
+                    // And its not a blank name
+                    !string.IsNullOrEmpty(device.Name) &&
+                    // And the name is different
+                    existingName != device.Name;
+
+                // If we are no longer listening...
+                if (!Listening)
+                    // Don't bother adding to the list and do nothing
+                    return;
+
                 // Add/update the device in the dictionary
                 mDiscoverdDevices[device.DeviceId] = device;
             }
@@ -253,7 +256,7 @@ namespace Blueberry.Desktop.WindowsApp.Bluetooth
 
                     if (service.Uuid.ToString("N").Substring(4, 4) == "1808")
                     {
-                        
+
                     }
                 }
             }
